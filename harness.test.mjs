@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { atomic, applyAnswer, safeSource, validatePlan, overlaps, FreeBudget, passes, catalog, git, exec, readJson } from './core.mjs';
+import { atomic, parseAnswer, applyAnswer, safeSource, validatePlan, overlaps, FreeBudget, passes, catalog, git, exec, readJson } from './core.mjs';
 const home = path.dirname(fileURLToPath(import.meta.url));
 const temp = () => fs.mkdtempSync(path.join(os.tmpdir(), 'collision-harness-test-'));
 const tasks = ['A','B','C'].map(id => ({ id, title: id, body: 'Implement feature ' + id }));
@@ -103,4 +103,11 @@ return {ok:true,json:async()=>({id:'fixture-'+Date.now(),model:request.model,usa
   const resumed=readJson(path.join(dir,'summary.json'));
   assert.equal(resumed.tasks.A.status,'verified'); assert.equal(resumed.requests,before);
   assert.equal(fs.readFileSync(path.join(dir,'events.jsonl'),'utf8').includes('test-not-a-real-key'),false);
+});
+
+test('recover prose-wrapped JSON without accepting partial output; uncertain ownership serializes', () => {
+  assert.deepEqual(parseAnswer('Here is the result:\n```json\n{"files":[]}\n```\nAll done.'),{files:[]});
+  assert.throws(()=>parseAnswer('```json\n{"files":['));
+  const p=plan(); p.tasks[0].files=['docs/api.md'];
+  assert.deepEqual(validatePlan(p,tasks)[0].files,['src/*']);
 });

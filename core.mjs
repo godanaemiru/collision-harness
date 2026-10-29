@@ -19,7 +19,11 @@ export async function git(cwd, ...args) {
 }
 export function parseAnswer(text) {
   if (typeof text !== 'string') throw Error('Model did not return text');
-  return JSON.parse(text.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, ''));
+  const candidates = [text.trim(), ...[...text.matchAll(/```(?:json)?\s*([\s\S]*?)```/gi)].map(m => m[1].trim())];
+  for (const candidate of candidates) {
+    try { const parsed = JSON.parse(candidate); if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) return parsed; } catch {}
+  }
+  throw Error('Model response did not contain a complete JSON object');
 }
 export function filesUnder(root, dir) {
   const base = path.join(root, dir);
@@ -62,7 +66,8 @@ export function validatePlan(raw, tasks) {
       if (!Array.isArray(p[field]) || p[field].some(id => !ids.has(id) || id === p.id)) throw Error('Invalid ' + field);
     }
     if (!Array.isArray(p.files) || !p.files.length) p.files = ['src/*'];
-    p.files.forEach(f => { if (f !== 'src/*') safeSource(path.resolve('.'), f); });
+    try { p.files.forEach(f => { if (f !== 'src/*') safeSource(path.resolve('.'), f); }); }
+    catch { p.files = ['src/*']; } // Uncertain/read-only paths require conservative whole-source ownership.
     return { id: p.id, dependsOn: [...new Set(p.dependsOn)], conflicts: [...new Set(p.conflicts)], files: [...new Set(p.files)], reason: String(p.reason || '') };
   });
   const visiting = new Set(), visited = new Set();
