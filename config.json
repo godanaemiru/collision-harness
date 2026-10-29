@@ -1,0 +1,13 @@
+{
+  "repo": "../collision-course-ledger",
+  "runsDir": "../collision-private-runs",
+  "budgetUsd": 5,
+  "maxRequests": 45,
+  "workers": 3,
+  "models": [
+    "cohere/north-mini-code:free",
+    "poolside/laguna-s-2.1:free"
+  ],
+  "maxTokens": 8000,
+  "attemptsPerTask": 2
+}

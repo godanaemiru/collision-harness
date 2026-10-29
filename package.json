@@ -1,0 +1,10 @@
+{
+  "name": "collision-harness",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Original dependency-free coordinator for Collision Course",
+  "engines": { "node": ">=20" },
+  "scripts": { "test": "node --test", "start": "node cli.mjs" },
+  "dependencies": {}
+}
