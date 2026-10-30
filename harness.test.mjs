@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { atomic, parseAnswer, applyAnswer, safeSource, validatePlan, overlaps, FreeBudget, passes, catalog, git, exec, readJson } from './core.mjs';
+import { atomic, parseAnswer, candidateReady, applyAnswer, safeSource, validatePlan, overlaps, FreeBudget, passes, catalog, git, exec, readJson } from './core.mjs';
 const home = path.dirname(fileURLToPath(import.meta.url));
 const temp = () => fs.mkdtempSync(path.join(os.tmpdir(), 'collision-harness-test-'));
 const tasks = ['A','B','C'].map(id => ({ id, title: id, body: 'Implement feature ' + id }));
@@ -80,7 +80,8 @@ fs.writeFileSync('grade-report.json',JSON.stringify({regression:{passed:!bad},te
   const mock=path.join(root,'mock.mjs');
   fs.writeFileSync(mock, `globalThis.fetch=async(url,options)=>{
 if(url.endsWith('/models'))return {ok:true,json:async()=>({data:['test/a:free','test/b:free'].map(id=>({id,pricing:{prompt:'0',completion:'0'}}))})};
-const request=JSON.parse(options.body),p=JSON.parse(request.messages[1].content);
+const request=JSON.parse(options.body),content=request.messages[1].content;
+const p=content.startsWith('{')?JSON.parse(content):{task:{id:/Implement feature ([ABC])/.exec(content)[1]}};
 const answer=p.backlog?{tasks:p.backlog.tasks.map(t=>({id:t.id,dependsOn:[],conflicts:[],files:['src/'+t.id+'.js']}))}:{files:[{path:'src/'+p.task.id+'.js',content:'1'}],summary:'I claim done'};
 return {ok:true,json:async()=>({id:'fixture-'+Date.now(),model:request.model,usage:{cost:0,prompt_tokens:10,completion_tokens:10},choices:[{message:{content:JSON.stringify(answer)}}]})};
 };`);
@@ -110,4 +111,12 @@ test('recover prose-wrapped JSON without accepting partial output; uncertain own
   assert.throws(()=>parseAnswer('```json\n{"files":['));
   const p=plan(); p.tasks[0].files=['docs/api.md'];
   assert.deepEqual(validatePlan(p,tasks)[0].files,['src/*']);
+});
+test('malformed metadata never repairs source and missing hidden tests remain unverified', () => {
+  const answer=parseAnswer('{"files":[{"path":"src/a.js","content":"const x = [1, 2];\\n"}],"summary":"bad""}');
+  assert.equal(answer.files[0].content,'const x = [1, 2];\n');
+  assert.throws(()=>parseAnswer('{"files":[{"path":"src/a.js","content":"unfinished'));
+  const r={regression:{passed:true},testsUnmodified:true,tasks:{H:{missing:true,passed:false}},contracts:{H:{passed:false}}};
+  assert.equal(candidateReady(r,'H'),false); r.contracts.H.passed=true;
+  assert.equal(candidateReady(r,'H'),true); assert.equal(passes(r,'H'),false);
 });

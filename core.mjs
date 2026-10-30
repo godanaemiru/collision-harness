@@ -140,7 +140,7 @@ export async function grade(root, evidence) {
 }
 export function passes(report, id) { return report.regression?.passed === true && report.testsUnmodified === true && report.tasks?.[id]?.passed === true; }
 export function candidateReady(report, id) {
-  return report.regression?.passed === true && report.testsUnmodified === true && (report.tasks?.[id]?.passed === true || report.tasks?.[id]?.missing === true);
+  return report.regression?.passed === true && report.testsUnmodified === true && (report.tasks?.[id]?.passed === true || report.tasks?.[id]?.missing === true) && (report.contracts?.[id]?.passed ?? true);
 }
 export async function catalog(fetcher = fetch) {
   const res = await fetcher('https://openrouter.ai/api/v1/models', { signal: AbortSignal.timeout(30000) });
