@@ -48,3 +48,7 @@ Official API references: https://openrouter.ai/docs/api_reference/overview and h
 
 ## Hidden backlog handling
 If a task has no local acceptance file, source changes may be accepted only after regression and integrity checks, and are reported as implemented_unverified. Such changes can support later dependencies but are not claimed to pass organizer tests. Use --replay-saved with resume to test unused complete saved worker responses without making new model calls. Malformed summaries may be discarded only when the complete files array itself parses as strict JSON; source strings are never repaired or evaluated by the parser.
+
+Private contract checks may be placed at <run>/checks/contracts.mjs. They execute against worker and integration worktrees; accepted changes must preserve earlier passing contracts. Passing these author-written checks never changes a hidden task to verified. Resumes may use --worker-model with one configured model to avoid a known failing provider, while the report retains every actual worker model from the entire run. Model metadata and explicit endpoint refusals determine whether reasoning must stay enabled. Operator interventions are recorded in events.jsonl.
+
+To package a stopped run: ./package-submission.ps1 -RunFolder <private-run-folder> -OutputFolder <deliverables-folder>. The public archive contains committed harness files only. The separate private bundle contains hidden task data and is intended only for the organizer.

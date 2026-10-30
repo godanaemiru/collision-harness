@@ -65,10 +65,10 @@ async function main() {
     fs.unlinkSync(lock);
   }
   fs.writeFileSync(lock, String(process.pid), { flag: 'wx' });
-  try { await run(runDir, backlog); }
+  try { await run(runDir, backlog, available); }
   finally { fs.unlinkSync(lock); }
 }
-async function run(dir, backlog) {
+async function run(dir, backlog, availableModels) {
   const stateFile = path.join(dir, 'state.json');
   const event = (type, detail = {}) => {
     fs.appendFileSync(path.join(dir, 'events.jsonl'), JSON.stringify({ at: new Date().toISOString(), type, ...detail }) + '\n');
@@ -155,16 +155,21 @@ async function run(dir, backlog) {
     } finally { unlock(); }
     event('model_dispatch', { request: reservation.id, model, ...meta });
     const messages = [{ role: 'system', content: system }, { role: 'user', content: user }];
-    atomic(path.join(evidence, 'request-' + reservation.id + '.json'), { model, messages, meta });
+    const mandatoryReasoning = availableModels.find(m => m.id === model)?.reasoning?.mandatory || state.mandatoryReasoningModels?.includes(model);
+    const reasoning = { enabled: Boolean(mandatoryReasoning) };
+    atomic(path.join(evidence, 'request-' + reservation.id + '.json'), { model, messages, meta, reasoning, maxTokens:cfg.maxTokens, zeroPriceCeiling:true });
     try {
       const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST', signal: AbortSignal.timeout(180000),
         headers: { Authorization: 'Bearer ' + process.env.OPENROUTER_API_KEY, 'Content-Type': 'application/json', 'X-OpenRouter-Title': 'Collision Harness' },
-        body: JSON.stringify({ model, messages, max_tokens: cfg.maxTokens, stream: false, reasoning: { enabled: false }, provider: { allow_fallbacks: false, max_price: { prompt: 0, completion: 0, request: 0 } } })
+        body: JSON.stringify({ model, messages, max_tokens: cfg.maxTokens, stream: false, reasoning, provider: { allow_fallbacks: false, max_price: { prompt: 0, completion: 0, request: 0 } } })
       });
       if (!res.ok) {
         const detail = await res.text();
         atomic(path.join(evidence, 'http-error-' + reservation.id + '.json'), { status: res.status, detail });
+        if (res.status === 400 && /reasoning is mandatory/i.test(detail)) {
+          state.mandatoryReasoningModels = [...new Set([...(state.mandatoryReasoningModels || []),model])]; save();
+        }
         if ([400,403,404,429].includes(res.status)) {
           const usageResponse = await fetch('https://openrouter.ai/api/v1/key', { headers: { Authorization: 'Bearer ' + process.env.OPENROUTER_API_KEY }, signal: AbortSignal.timeout(30000) });
           const usage = usageResponse.ok ? (await usageResponse.json()).data?.usage : null;
@@ -196,7 +201,8 @@ async function run(dir, backlog) {
   async function worker(plan, workerId) {
     const task = backlog.tasks.find(t => t.id === plan.id), item = state.tasks[task.id];
     const previousWorkspace = item.workspace;
-    const model = cfg.models[(workerId - 1 + item.attempts) % cfg.models.length];
+    const model = opt('--worker-model', cfg.models[(workerId - 1 + item.attempts) % cfg.models.length]);
+    if (!cfg.models.includes(model)) throw Error('Worker model must be one of the configured free models');
     item.attempts++; item.status = 'running'; item.worker = workerId; item.model = model; save();
     const workspace = path.join(dir, 'worker-' + workerId + '-' + task.id + '-' + item.attempts + '-' + randomUUID().slice(0, 6));
     await git(cfg.repo, 'worktree', 'add', '--detach', workspace, await git(integrated, 'rev-parse', 'HEAD'));
@@ -248,6 +254,7 @@ async function run(dir, backlog) {
   }
   try {
     while (!state.halted) {
+      if (state.requests.length >= cfg.maxRequests) { event('request_cap_reached', {requests:state.requests.length,limit:cfg.maxRequests}); break; }
       const wave = [];
       for (const p of state.plan) {
         const item = state.tasks[p.id];
