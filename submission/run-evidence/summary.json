@@ -1,0 +1,32 @@
+{
+  "redacted": true,
+  "startedAt": "2026-10-29T21:27:04.713Z",
+  "updatedAt": "2026-10-30T08:15:54.609Z",
+  "budgetUsd": 5,
+  "recordedSpendUsd": 0,
+  "requests": 45,
+  "unconfirmedRequests": [],
+  "workerIds": [
+    1,
+    3,
+    2
+  ],
+  "actualModels": [
+    "cohere/north-mini-code:free",
+    "poolside/laguna-s-2.1:free",
+    "nvidia/nemotron-3.5-lightning:free",
+    "poolside/laguna-xs-2.1:free"
+  ],
+  "agentRequirementMet": true,
+  "regression": {
+    "passed": true,
+    "tests": 33,
+    "failed": 0
+  },
+  "lockedFilesUnchanged": true,
+  "localChecksPassed": 2,
+  "totalTasks": 12,
+  "hiddenTestsVerified": 0,
+  "eventRows": 329,
+  "operatorInterventionsRecorded": true
+}

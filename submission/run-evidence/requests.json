@@ -1,0 +1,568 @@
+[
+  {
+    "request": 1,
+    "model": "cohere/north-mini-code:free",
+    "actualModel": "cohere/north-mini-code:free",
+    "startedAt": "2026-10-29T21:27:07.810Z",
+    "finishedAt": "2026-10-29T21:27:44.852Z",
+    "status": "complete",
+    "costUsd": 0,
+    "upperBoundUsd": 0,
+    "usage": {
+      "promptTokens": 2717,
+      "completionTokens": 8000,
+      "totalTokens": 10717,
+      "reasoningTokens": 8448,
+      "costUsd": 0
+    }
+  },
+  {
+    "request": 2,
+    "model": "poolside/laguna-s-2.1:free",
+    "actualModel": "poolside/laguna-s-2.1:free",
+    "startedAt": "2026-10-29T21:32:00.366Z",
+    "finishedAt": "2026-10-29T21:32:34.326Z",
+    "status": "complete",
+    "costUsd": 0,
+    "upperBoundUsd": 0,
+    "usage": {
+      "promptTokens": 2948,
+      "completionTokens": 1663,
+      "totalTokens": 4611,
+      "reasoningTokens": 0,
+      "costUsd": 0
+    }
+  },
+  {
+    "request": 3,
+    "model": "poolside/laguna-s-2.1:free",
+    "actualModel": "poolside/laguna-s-2.1:free",
+    "startedAt": "2026-10-29T21:33:33.330Z",
+    "finishedAt": "2026-10-29T21:35:59.368Z",
+    "status": "complete",
+    "costUsd": 0,
+    "upperBoundUsd": 0,
+    "usage": {
+      "promptTokens": 2948,
+      "completionTokens": 8000,
+      "totalTokens": 10948,
+      "reasoningTokens": 8000,
+      "costUsd": 0
+    }
+  },
+  {
+    "request": 4,
+    "model": "cohere/north-mini-code:free",
+    "actualModel": "cohere/north-mini-code:free",
+    "startedAt": "2026-10-29T21:36:30.641Z",
+    "finishedAt": "2026-10-29T21:37:10.090Z",
+    "status": "complete",
+    "costUsd": 0,
+    "upperBoundUsd": 0,
+    "usage": {
+      "promptTokens": 5235,
+      "completionTokens": 8000,
+      "totalTokens": 13235,
+      "reasoningTokens": 8422,
+      "costUsd": 0
+    }
+  },
+  {
+    "request": 5,
+    "model": "poolside/laguna-s-2.1:free",
+    "startedAt": "2026-10-29T21:37:10.856Z",
+    "reconciledAt": "2026-10-29T21:45:03.118Z",
+    "status": "reconciled_zero_key_usage",
+    "costUsd": 0,
+    "upperBoundUsd": 0
+  },
+  {
+    "request": 6,
+    "model": "cohere/north-mini-code:free",
+    "actualModel": "cohere/north-mini-code:free",
+    "startedAt": "2026-10-29T21:45:08.686Z",
+    "finishedAt": "2026-10-29T21:46:39.735Z",
+    "status": "complete",
+    "costUsd": 0,
+    "upperBoundUsd": 0,
+    "usage": {
+      "promptTokens": 5235,
+      "completionTokens": 5679,
+      "totalTokens": 10914,
+      "reasoningTokens": 0,
+      "costUsd": 0
+    }
+  },
+  {
+    "request": 7,
+    "model": "cohere/north-mini-code:free",
+    "actualModel": "cohere/north-mini-code:free",
+    "startedAt": "2026-10-29T21:46:40.499Z",
+    "finishedAt": "2026-10-29T21:47:20.071Z",
+    "status": "complete",
+    "costUsd": 0,
+    "upperBoundUsd": 0,
+    "usage": {
+      "promptTokens": 5243,
+      "completionTokens": 3352,
+      "totalTokens": 8595,
+      "reasoningTokens": 0,
+      "costUsd": 0
+    }
+  },
+  {
+    "request": 8,
+    "model": "poolside/laguna-s-2.1:free",
+    "actualModel": "poolside/laguna-s-2.1:free",
+    "startedAt": "2026-10-29T21:47:20.754Z",
+    "finishedAt": "2026-10-29T21:49:55.339Z",
+    "status": "complete",
+    "costUsd": 0,
+    "upperBoundUsd": 0,
+    "usage": {
+      "promptTokens": 5686,
+      "completionTokens": 8000,
+      "totalTokens": 13686,
+      "reasoningTokens": 0,
+      "costUsd": 0
+    }
+  },
+  {
+    "request": 9,
+    "model": "cohere/north-mini-code:free",
+    "actualModel": "cohere/north-mini-code:free",
+    "startedAt": "2026-10-29T21:49:56.169Z",
+    "finishedAt": "2026-10-29T21:50:21.451Z",
+    "status": "complete",
+    "costUsd": 0,
+    "upperBoundUsd": 0,
+    "usage": {
+      "promptTokens": 5397,
+      "completionTokens": 7997,
+      "totalTokens": 13394,
+      "reasoningTokens": 0,
+      "costUsd": 0
+    }
+  },
+  {
+    "request": 10,
+    "model": "cohere/north-mini-code:free",
+    "actualModel": "cohere/north-mini-code:free",
+    "startedAt": "2026-10-29T21:50:22.197Z",
+    "finishedAt": "2026-10-29T21:50:52.798Z",
+    "status": "complete",
+    "costUsd": 0,
+    "upperBoundUsd": 0,
+    "usage": {
+      "promptTokens": 5324,
+      "completionTokens": 6629,
+      "totalTokens": 11953,
+      "reasoningTokens": 0,
+      "costUsd": 0
+    }
+  },
+  {
+    "request": 11,
+    "model": "poolside/laguna-s-2.1:free",
+    "startedAt": "2026-10-29T21:50:53.525Z",
+    "status": "reconciled_zero_key_usage",
+    "costUsd": 0,
+    "upperBoundUsd": 0
+  },
+  {
+    "request": 12,
+    "model": "google/gemma-4-31b-it:free",
+    "startedAt": "2026-10-30T07:34:17.134Z",
+    "status": "reconciled_zero_key_usage",
+    "costUsd": 0,
+    "upperBoundUsd": 0
+  },
+  {
+    "request": 13,
+    "model": "cohere/north-mini-code:free",
+    "actualModel": "cohere/north-mini-code:free",
+    "startedAt": "2026-10-30T07:36:15.658Z",
+    "finishedAt": "2026-10-30T07:36:17.794Z",
+    "status": "complete",
+    "costUsd": 0,
+    "upperBoundUsd": 0,
+    "usage": {
+      "promptTokens": 5422,
+      "completionTokens": 134,
+      "totalTokens": 5556,
+      "reasoningTokens": 0,
+      "costUsd": 0
+    }
+  },
+  {
+    "request": 14,
+    "model": "cohere/north-mini-code:free",
+    "actualModel": "cohere/north-mini-code:free",
+    "startedAt": "2026-10-30T07:36:19.050Z",
+    "finishedAt": "2026-10-30T07:36:21.526Z",
+    "status": "complete",
+    "costUsd": 0,
+    "upperBoundUsd": 0,
+    "usage": {
+      "promptTokens": 5431,
+      "completionTokens": 100,
+      "totalTokens": 5531,
+      "reasoningTokens": 0,
+      "costUsd": 0
+    }
+  },
+  {
+    "request": 15,
+    "model": "cohere/north-mini-code:free",
+    "actualModel": "cohere/north-mini-code:free",
+    "startedAt": "2026-10-30T07:36:22.794Z",
+    "finishedAt": "2026-10-30T07:36:23.659Z",
+    "status": "complete",
+    "costUsd": 0,
+    "upperBoundUsd": 0,
+    "usage": {
+      "promptTokens": 5739,
+      "completionTokens": 100,
+      "totalTokens": 5839,
+      "reasoningTokens": 0,
+      "costUsd": 0
+    }
+  },
+  {
+    "request": 16,
+    "model": "google/gemma-4-31b-it:free",
+    "startedAt": "2026-10-30T07:36:26.005Z",
+    "finishedAt": "2026-10-30T07:36:27.008Z",
+    "status": "rejected_reconciled_zero",
+    "costUsd": 0,
+    "upperBoundUsd": 0
+  },
+  {
+    "request": 17,
+    "model": "cohere/north-mini-code:free",
+    "actualModel": "cohere/north-mini-code:free",
+    "startedAt": "2026-10-30T07:36:29.227Z",
+    "finishedAt": "2026-10-30T07:36:37.481Z",
+    "status": "complete",
+    "costUsd": 0,
+    "upperBoundUsd": 0,
+    "usage": {
+      "promptTokens": 5509,
+      "completionTokens": 690,
+      "totalTokens": 6199,
+      "reasoningTokens": 0,
+      "costUsd": 0
+    }
+  },
+  {
+    "request": 18,
+    "model": "google/gemma-4-31b-it:free",
+    "startedAt": "2026-10-30T07:36:38.746Z",
+    "finishedAt": "2026-10-30T07:36:39.762Z",
+    "status": "rejected_reconciled_zero",
+    "costUsd": 0,
+    "upperBoundUsd": 0
+  },
+  {
+    "request": 19,
+    "model": "cohere/north-mini-code:free",
+    "startedAt": "2026-10-30T07:36:41.957Z",
+    "status": "reconciled_zero_key_usage",
+    "costUsd": 0,
+    "upperBoundUsd": 0
+  },
+  {
+    "request": 20,
+    "model": "thinkingmachines/inkling:free",
+    "startedAt": "2026-10-30T07:38:55.609Z",
+    "status": "reconciled_zero_key_usage",
+    "costUsd": 0,
+    "upperBoundUsd": 0
+  },
+  {
+    "request": 21,
+    "model": "nvidia/nemotron-3.5-lightning:free",
+    "actualModel": "nvidia/nemotron-3.5-lightning:free",
+    "startedAt": "2026-10-30T07:39:53.945Z",
+    "finishedAt": "2026-10-30T07:41:24.744Z",
+    "status": "complete",
+    "costUsd": 0,
+    "upperBoundUsd": 0,
+    "usage": {
+      "promptTokens": 6038,
+      "completionTokens": 8219,
+      "totalTokens": 14257,
+      "reasoningTokens": 5139,
+      "costUsd": 0
+    }
+  },
+  {
+    "request": 22,
+    "model": "cohere/north-mini-code:free",
+    "actualModel": "cohere/north-mini-code:free",
+    "startedAt": "2026-10-30T07:41:25.864Z",
+    "finishedAt": "2026-10-30T07:42:41.988Z",
+    "status": "complete",
+    "costUsd": 0,
+    "upperBoundUsd": 0,
+    "usage": {
+      "promptTokens": 5110,
+      "completionTokens": 5935,
+      "totalTokens": 11045,
+      "reasoningTokens": 5924,
+      "costUsd": 0
+    }
+  },
+  {
+    "request": 23,
+    "model": "nvidia/nemotron-3.5-lightning:free",
+    "startedAt": "2026-10-30T07:42:42.254Z",
+    "status": "reconciled_zero_key_usage",
+    "costUsd": 0,
+    "upperBoundUsd": 0
+  },
+  {
+    "request": 24,
+    "model": "cohere/north-mini-code:free",
+    "startedAt": "2026-10-30T07:48:33.306Z",
+    "status": "reconciled_zero_key_usage",
+    "costUsd": 0,
+    "upperBoundUsd": 0
+  },
+  {
+    "request": 25,
+    "model": "liquid/lfm-2.5-2.6b:free",
+    "startedAt": "2026-10-30T07:53:01.057Z",
+    "finishedAt": "2026-10-30T07:53:01.940Z",
+    "status": "rejected_reconciled_zero",
+    "costUsd": 0,
+    "upperBoundUsd": 0
+  },
+  {
+    "request": 26,
+    "model": "poolside/laguna-xs-2.1:free",
+    "actualModel": "poolside/laguna-xs-2.1:free",
+    "startedAt": "2026-10-30T07:53:04.264Z",
+    "finishedAt": "2026-10-30T07:53:49.602Z",
+    "status": "complete",
+    "costUsd": 0,
+    "upperBoundUsd": 0,
+    "usage": {
+      "promptTokens": 5786,
+      "completionTokens": 1344,
+      "totalTokens": 7130,
+      "reasoningTokens": 0,
+      "costUsd": 0
+    }
+  },
+  {
+    "request": 27,
+    "model": "poolside/laguna-xs-2.1:free",
+    "actualModel": "poolside/laguna-xs-2.1:free",
+    "startedAt": "2026-10-30T07:53:53.660Z",
+    "finishedAt": "2026-10-30T07:54:15.038Z",
+    "status": "complete",
+    "costUsd": 0,
+    "upperBoundUsd": 0,
+    "usage": {
+      "promptTokens": 6251,
+      "completionTokens": 1334,
+      "totalTokens": 7585,
+      "reasoningTokens": 0,
+      "costUsd": 0
+    }
+  },
+  {
+    "request": 28,
+    "model": "poolside/laguna-xs-2.1:free",
+    "actualModel": "poolside/laguna-xs-2.1:free",
+    "startedAt": "2026-10-30T07:54:17.864Z",
+    "finishedAt": "2026-10-30T07:54:26.429Z",
+    "status": "complete",
+    "costUsd": 0,
+    "upperBoundUsd": 0,
+    "usage": {
+      "promptTokens": 6217,
+      "completionTokens": 1065,
+      "totalTokens": 7282,
+      "reasoningTokens": 0,
+      "costUsd": 0
+    }
+  },
+  {
+    "request": 29,
+    "model": "poolside/laguna-xs-2.1:free",
+    "startedAt": "2026-10-30T07:54:28.002Z",
+    "finishedAt": "2026-10-30T07:54:28.873Z",
+    "status": "rejected_reconciled_zero",
+    "costUsd": 0,
+    "upperBoundUsd": 0
+  },
+  {
+    "request": 30,
+    "model": "liquid/lfm-2.5-2.6b:free",
+    "startedAt": "2026-10-30T07:54:31.222Z",
+    "finishedAt": "2026-10-30T07:54:31.619Z",
+    "status": "rejected_reconciled_zero",
+    "costUsd": 0,
+    "upperBoundUsd": 0
+  },
+  {
+    "request": 31,
+    "model": "liquid/lfm-2.5-2.6b:free",
+    "startedAt": "2026-10-30T07:54:34.448Z",
+    "finishedAt": "2026-10-30T07:54:34.869Z",
+    "status": "rejected_reconciled_zero",
+    "costUsd": 0,
+    "upperBoundUsd": 0
+  },
+  {
+    "request": 32,
+    "model": "liquid/lfm-2.5-2.6b:free",
+    "startedAt": "2026-10-30T07:54:37.660Z",
+    "finishedAt": "2026-10-30T07:54:38.062Z",
+    "status": "rejected_reconciled_zero",
+    "costUsd": 0,
+    "upperBoundUsd": 0
+  },
+  {
+    "request": 33,
+    "model": "poolside/laguna-xs-2.1:free",
+    "startedAt": "2026-10-30T07:54:40.875Z",
+    "finishedAt": "2026-10-30T07:54:41.499Z",
+    "status": "rejected_reconciled_zero",
+    "costUsd": 0,
+    "upperBoundUsd": 0
+  },
+  {
+    "request": 34,
+    "model": "poolside/laguna-xs-2.1:free",
+    "startedAt": "2026-10-30T07:54:44.113Z",
+    "finishedAt": "2026-10-30T07:54:44.748Z",
+    "status": "rejected_reconciled_zero",
+    "costUsd": 0,
+    "upperBoundUsd": 0
+  },
+  {
+    "request": 35,
+    "model": "poolside/laguna-xs-2.1:free",
+    "actualModel": "poolside/laguna-xs-2.1:free",
+    "startedAt": "2026-10-30T07:54:47.340Z",
+    "finishedAt": "2026-10-30T07:56:03.302Z",
+    "status": "complete",
+    "costUsd": 0,
+    "upperBoundUsd": 0,
+    "usage": {
+      "promptTokens": 6160,
+      "completionTokens": 2623,
+      "totalTokens": 8783,
+      "reasoningTokens": 0,
+      "costUsd": 0
+    }
+  },
+  {
+    "request": 36,
+    "model": "liquid/lfm-2.5-2.6b:free",
+    "startedAt": "2026-10-30T07:56:03.536Z",
+    "finishedAt": "2026-10-30T07:56:04.467Z",
+    "status": "rejected_reconciled_zero",
+    "costUsd": 0,
+    "upperBoundUsd": 0
+  },
+  {
+    "request": 37,
+    "model": "liquid/lfm-2.5-2.6b:free",
+    "startedAt": "2026-10-30T07:56:06.754Z",
+    "finishedAt": "2026-10-30T07:56:07.160Z",
+    "status": "rejected_reconciled_zero",
+    "costUsd": 0,
+    "upperBoundUsd": 0
+  },
+  {
+    "request": 38,
+    "model": "liquid/lfm-2.5-2.6b:free",
+    "startedAt": "2026-10-30T07:56:09.975Z",
+    "finishedAt": "2026-10-30T07:56:10.378Z",
+    "status": "rejected_reconciled_zero",
+    "costUsd": 0,
+    "upperBoundUsd": 0
+  },
+  {
+    "request": 39,
+    "model": "poolside/laguna-xs-2.1:free",
+    "actualModel": "poolside/laguna-xs-2.1:free",
+    "startedAt": "2026-10-30T07:56:13.190Z",
+    "finishedAt": "2026-10-30T07:56:31.920Z",
+    "status": "complete",
+    "costUsd": 0,
+    "upperBoundUsd": 0,
+    "usage": {
+      "promptTokens": 6149,
+      "completionTokens": 2236,
+      "totalTokens": 8385,
+      "reasoningTokens": 0,
+      "costUsd": 0
+    }
+  },
+  {
+    "request": 40,
+    "model": "poolside/laguna-xs-2.1:free",
+    "actualModel": "poolside/laguna-xs-2.1:free",
+    "startedAt": "2026-10-30T08:07:12.229Z",
+    "finishedAt": "2026-10-30T08:07:34.734Z",
+    "status": "complete",
+    "costUsd": 0,
+    "upperBoundUsd": 0,
+    "usage": {
+      "promptTokens": 6047,
+      "completionTokens": 1003,
+      "totalTokens": 7050,
+      "reasoningTokens": 0,
+      "costUsd": 0
+    }
+  },
+  {
+    "request": 41,
+    "model": "poolside/laguna-xs-2.1:free",
+    "startedAt": "2026-10-30T08:07:35.113Z",
+    "status": "reconciled_zero_key_usage",
+    "costUsd": 0,
+    "upperBoundUsd": 0
+  },
+  {
+    "request": 42,
+    "model": "poolside/laguna-xs-2.1:free",
+    "startedAt": "2026-10-30T08:13:44.803Z",
+    "reconciledAt": "2026-10-30T08:14:45.535Z",
+    "status": "interrupted_reconciled_zero",
+    "costUsd": 0,
+    "upperBoundUsd": 0
+  },
+  {
+    "request": 43,
+    "model": "poolside/laguna-xs-2.1:free",
+    "startedAt": "2026-10-30T08:14:46.162Z",
+    "finishedAt": "2026-10-30T08:14:47.579Z",
+    "status": "rejected_reconciled_zero",
+    "costUsd": 0,
+    "upperBoundUsd": 0
+  },
+  {
+    "request": 44,
+    "model": "poolside/laguna-xs-2.1:free",
+    "startedAt": "2026-10-30T08:14:49.398Z",
+    "reconciledAt": "2026-10-30T08:15:50.183Z",
+    "status": "interrupted_reconciled_zero",
+    "costUsd": 0,
+    "upperBoundUsd": 0
+  },
+  {
+    "request": 45,
+    "model": "poolside/laguna-xs-2.1:free",
+    "startedAt": "2026-10-30T08:15:50.840Z",
+    "finishedAt": "2026-10-30T08:15:52.440Z",
+    "status": "rejected_reconciled_zero",
+    "costUsd": 0,
+    "upperBoundUsd": 0
+  }
+]

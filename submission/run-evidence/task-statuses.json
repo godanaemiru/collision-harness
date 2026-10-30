@@ -1,0 +1,139 @@
+[
+  {
+    "task": "Task-01",
+    "status": "implemented_unverified",
+    "attempts": 12,
+    "worker": 3,
+    "model": "poolside/laguna-xs-2.1:free",
+    "localContractPassed": true,
+    "dependsOn": [],
+    "conflicts": []
+  },
+  {
+    "task": "Task-02",
+    "status": "blocked",
+    "attempts": 4,
+    "worker": 1,
+    "model": "cohere/north-mini-code:free",
+    "localContractPassed": false,
+    "failureClass": "other",
+    "dependsOn": [
+      "Task-10"
+    ],
+    "conflicts": [
+      "Task-05"
+    ]
+  },
+  {
+    "task": "Task-03",
+    "status": "implemented_unverified",
+    "attempts": 6,
+    "worker": 1,
+    "model": "poolside/laguna-xs-2.1:free",
+    "localContractPassed": true,
+    "dependsOn": [],
+    "conflicts": []
+  },
+  {
+    "task": "Task-04",
+    "status": "queued",
+    "attempts": 4,
+    "worker": 3,
+    "model": "poolside/laguna-xs-2.1:free",
+    "localContractPassed": false,
+    "failureClass": "http_429",
+    "dependsOn": [],
+    "conflicts": []
+  },
+  {
+    "task": "Task-05",
+    "status": "blocked",
+    "attempts": 0,
+    "localContractPassed": null,
+    "failureClass": "other",
+    "dependsOn": [
+      "Task-02"
+    ],
+    "conflicts": [
+      "Task-02"
+    ]
+  },
+  {
+    "task": "Task-06",
+    "status": "failed",
+    "attempts": 3,
+    "worker": 1,
+    "model": "poolside/laguna-xs-2.1:free",
+    "localContractPassed": false,
+    "failureClass": "connection_or_timeout",
+    "dependsOn": [],
+    "conflicts": []
+  },
+  {
+    "task": "Task-07",
+    "status": "failed",
+    "attempts": 3,
+    "worker": 3,
+    "model": "poolside/laguna-xs-2.1:free",
+    "localContractPassed": false,
+    "failureClass": "connection_or_timeout",
+    "dependsOn": [],
+    "conflicts": []
+  },
+  {
+    "task": "Task-08",
+    "status": "blocked",
+    "attempts": 0,
+    "localContractPassed": false,
+    "failureClass": "other",
+    "dependsOn": [
+      "Task-02",
+      "Task-10"
+    ],
+    "conflicts": []
+  },
+  {
+    "task": "Task-09",
+    "status": "queued",
+    "attempts": 2,
+    "worker": 1,
+    "model": "poolside/laguna-xs-2.1:free",
+    "localContractPassed": false,
+    "failureClass": "verification",
+    "dependsOn": [],
+    "conflicts": []
+  },
+  {
+    "task": "Task-10",
+    "status": "failed",
+    "attempts": 7,
+    "worker": 2,
+    "model": "poolside/laguna-xs-2.1:free",
+    "localContractPassed": false,
+    "failureClass": "no_effective_change",
+    "dependsOn": [],
+    "conflicts": []
+  },
+  {
+    "task": "Task-11",
+    "status": "failed",
+    "attempts": 3,
+    "worker": 2,
+    "model": "poolside/laguna-xs-2.1:free",
+    "localContractPassed": false,
+    "failureClass": "http_429",
+    "dependsOn": [],
+    "conflicts": []
+  },
+  {
+    "task": "Task-12",
+    "status": "failed",
+    "attempts": 4,
+    "worker": 1,
+    "model": "poolside/laguna-xs-2.1:free",
+    "localContractPassed": false,
+    "failureClass": "http_429",
+    "dependsOn": [],
+    "conflicts": []
+  }
+]

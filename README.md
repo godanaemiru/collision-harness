@@ -52,3 +52,6 @@ If a task has no local acceptance file, source changes may be accepted only afte
 Private contract checks may be placed at <run>/checks/contracts.mjs. They execute against worker and integration worktrees; accepted changes must preserve earlier passing contracts. Passing these author-written checks never changes a hidden task to verified. Resumes may use --worker-model with one configured model to avoid a known failing provider, while the report retains every actual worker model from the entire run. Model metadata and explicit endpoint refusals determine whether reasoning must stay enabled. Operator interventions are recorded in events.jsonl.
 
 To package a stopped run: ./package-submission.ps1 -RunFolder <private-run-folder> -OutputFolder <deliverables-folder>. The public archive contains committed harness files only. The separate private bundle contains hidden task data and is intended only for the organizer.
+
+## Public submission evidence
+See [the redacted run evidence](submission/run-evidence/README.md) for timestamped worker activity, all 45 dispatch records, reported token usage, spending, task outcomes and recorded operator interventions. The [one-page write-up](submission/writeup.pdf) describes the partial result. Hidden task content and raw transcripts remain private; organizer acceptance of a redacted export is not assumed.
