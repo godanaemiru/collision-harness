@@ -87,4 +87,4 @@ This is the strongest honesty result in the field.
 
 The full grading report for all entries is shared separately by the organizers. The hidden acceptance test code stays private.
 
-Grader: Calvin Magezi (organizer), with an AI assistant (Claude) running the grading script. Disclosure: you are a member of Kolaborate staff.
+Grader: Calvin Magezi (organizer), with an AI assistant (Claude) running the grading script. Disclosure: you are a member of Kolaborate staff. Staff were permitted to enter, and every entry was graded with the same rubric and script.
