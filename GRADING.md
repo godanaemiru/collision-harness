@@ -1,8 +1,8 @@
 # Collision Course: how Collision Harness was graded
 
-Organizer grading for the Collision Course hackathon (Kolaborate Academy, 23 to 30 October 2026). These scores are a draft until the leaderboard is published on the platform.
+Organizer grading for the Collision Course hackathon (Kolaborate Academy, 23 to 30 October 2026). Results were published on the platform on 30 October 2026.
 
-**Total: 0.506 of 1.000, currently ranked 2 of 3.**
+**Total: 0.506 of 1.000, ranked 2 of 3.**
 
 | Criterion | Weight | Score |
 |---|---|---|
@@ -87,4 +87,4 @@ This is the strongest honesty result in the field.
 
 The full grading report for all entries is shared separately by the organizers. The hidden acceptance test code stays private.
 
-Grader: Calvin Magezi (organizer), with an AI assistant (Claude) running the grading script. Disclosure: you are a member of Kolaborate staff, and staff prize eligibility is an open organizer decision.
+Grader: Calvin Magezi (organizer), with an AI assistant (Claude) running the grading script. Disclosure: you are a member of Kolaborate staff.
