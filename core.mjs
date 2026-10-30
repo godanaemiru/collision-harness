@@ -23,7 +23,7 @@ export function parseAnswer(text) {
   for (const candidate of candidates) {
     try { const parsed = JSON.parse(candidate); if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) return parsed; } catch {}
   }
-  for (const key of ['files', 'tasks']) {
+  for (const key of ['files', 'edits', 'tasks']) {
     const match = new RegExp('"' + key + '"\\s*:\\s*\\[').exec(text);
     if (!match) continue;
     const start = match.index + match[0].lastIndexOf('[');
@@ -68,6 +68,25 @@ export function safeSource(root, name) {
   return target;
 }
 export function applyAnswer(root, answer, owned) {
+  if (Array.isArray(answer.edits)) {
+    if (answer.files?.length || answer.edits.length > 40) throw Error('Use edits or full files, not both; at most 40 edits');
+    const staged = new Map();
+    for (const edit of answer.edits) {
+      const target = safeSource(root, edit.path);
+      if (!owned.includes('src/*') && !owned.includes(edit.path)) throw Error('File outside task ownership: ' + edit.path);
+      if (typeof edit.find !== 'string' || !edit.find.length || typeof edit.replace !== 'string') throw Error('Edit needs nonempty find text and a replacement string');
+      if (!fs.existsSync(target)) throw Error('Exact edits require an existing file');
+      const content = staged.get(edit.path)?.content ?? fs.readFileSync(target, 'utf8').replace(/\r\n/g,'\n');
+      const find = edit.find.replace(/\r\n/g,'\n');
+      const offset = content.indexOf(find);
+      if (offset < 0 || content.indexOf(find, offset + 1) >= 0) throw Error('Edit anchor must match exactly once: '+JSON.stringify({path:edit.path,find:find.slice(0,700),actualSource:content.slice(0,5000)}));
+      const revised = content.slice(0,offset) + edit.replace.replace(/\r\n/g,'\n') + content.slice(offset+find.length);
+      if (Buffer.byteLength(revised) > 150000) throw Error('Revised file is too large');
+      staged.set(edit.path,{target,content:revised});
+    }
+    for (const {target,content} of staged.values()) fs.writeFileSync(target,content);
+    return [...staged.keys()];
+  }
   if (!Array.isArray(answer.files) || answer.files.length > 20) throw Error('Expected at most 20 files');
   const seen = new Set();
   const writes = answer.files.map(f => {
@@ -102,6 +121,21 @@ export function validatePlan(raw, tasks) {
   result.forEach(p => visit(p.id)); return result;
 }
 export function overlaps(a, b) { return a.includes('src/*') || b.includes('src/*') || a.some(x => b.includes(x)); }
+export class ProviderCircuit {
+  constructor(state, clock = Date.now) { this.state = state; this.clock = clock; }
+  select(models, preferred) {
+    if (!models.includes(preferred)) throw Error('Model must be configured');
+    const order = [preferred,...models.filter(m=>m!==preferred)];
+    const selected = order.find(m=>(this.state[m]?.blockedUntil || 0) <= this.clock());
+    if (!selected) { const error=Error('All configured free providers are cooling down'); error.code='PROVIDERS_COOLING_DOWN'; throw error; }
+    return selected;
+  }
+  fail(model, reason) {
+    const delay = /403|404/.test(reason) ? 86400000 : /429/.test(reason) ? 60000 : 30000;
+    this.state[model] = {failures:(this.state[model]?.failures || 0)+1,reason,blockedUntil:this.clock()+delay};
+  }
+  success(model) { this.state[model]={failures:0,blockedUntil:0}; }
+}
 export class FreeBudget {
   constructor(state, config, persist, event) { Object.assign(this, { state, config, persist, event }); }
   reserve(model) {

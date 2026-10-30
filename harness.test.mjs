@@ -83,11 +83,14 @@ if(url.endsWith('/models'))return {ok:true,json:async()=>({data:['test/a:free','
 const request=JSON.parse(options.body),content=request.messages[1].content;
 const p=content.startsWith('{')?JSON.parse(content):{task:{id:/Implement feature ([ABC])/.exec(content)[1]}};
 const answer=p.backlog?{tasks:p.backlog.tasks.map(t=>({id:t.id,dependsOn:[],conflicts:[],files:['src/'+t.id+'.js']}))}:{files:[{path:'src/'+p.task.id+'.js',content:'1'}],summary:'I claim done'};
+if(p.task?.id==='C')answer.files.push({path:'src/helper.js',content:'export const helper = 1;'});
 return {ok:true,json:async()=>({id:'fixture-'+Date.now(),model:request.model,usage:{cost:0,prompt_tokens:10,completion_tokens:10},choices:[{message:{content:JSON.stringify(answer)}}]})};
 };`);
   const opts={cwd:home,env:{...process.env,OPENROUTER_API_KEY:'test-not-a-real-key'},timeout:90000,maxBuffer:4e6};
   await exec(process.execPath,['--import',pathToFileURL(mock).href,'cli.mjs','run','--config',cfg],opts);
   const dir=path.join(runs,fs.readdirSync(runs)[0]), summary=readJson(path.join(dir,'summary.json'));
+  assert.match(fs.readFileSync(path.join(dir,'events.jsonl'),'utf8'),/candidate_reused/);
+  const dispatched=fs.readFileSync(path.join(dir,'events.jsonl'),'utf8').trim().split('\n').map(JSON.parse).filter(e=>e.type==='model_dispatch'&&e.task==='C');assert.equal(dispatched.length,1);
   assert.equal(summary.agentRequirementMet,true); assert.equal(summary.confirmedSpendUsd,0);
   assert.equal(summary.tasks.A.status,'verified'); assert.equal(summary.tasks.C.status,'verified'); assert.equal(summary.tasks.B.status,'failed');
   assert.match(fs.readFileSync(path.join(dir,'events.jsonl'),'utf8'),/merge_rejected/);

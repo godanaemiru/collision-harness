@@ -3,3 +3,6 @@
 !.env.example
 .runs/
 node_modules/
+
+trial.config.json
+.trial-run-path

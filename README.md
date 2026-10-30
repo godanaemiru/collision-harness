@@ -55,3 +55,8 @@ To package a stopped run: ./package-submission.ps1 -RunFolder <private-run-folde
 
 ## Public submission evidence
 See [the redacted run evidence](submission/run-evidence/README.md) for timestamped worker activity, all 45 dispatch records, reported token usage, spending, task outcomes and recorded operator interventions. The [one-page write-up](submission/writeup.pdf) describes the partial result. Hidden task content and raw transcripts remain private; organizer acceptance of a redacted export is not assumed.
+
+## Improvement revision (separate from submitted run)
+The improvement branch adds validated exact-text edits, Windows line-ending normalization, provider cooldowns with configured-model fallback, detailed stale-anchor feedback, rejection of candidates that break earlier local contracts, and cached candidate reuse after ownership correction. The offline integration fixture verifies that an ownership reschedule does not repeat the model request. All 15 offline tests pass.
+
+A separate free-only trial uses a USD 0 budget and its own request cap. It starts from the submitted source snapshot and preserves checksums of the original submission logs. Trial results must not be presented as part of the earlier submitted run.
