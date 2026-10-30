@@ -19,7 +19,7 @@ foreach($taskName in @('src','docs','test','acceptance','scripts','backlog','AGE
 }
 $taskEvidenceRoot=Join-Path $taskStage 'run-evidence'
 New-Item -ItemType Directory -Path $taskEvidenceRoot | Out-Null
-foreach($taskName in @('evidence','checks','events.jsonl','state.json','summary.json','writeup.md')){
+foreach($taskName in @('evidence','checks','events.jsonl','state.json','summary.json','writeup.md','writeup.pdf')){
  $taskSource=Join-Path $taskRunRoot $taskName
  if(Test-Path -LiteralPath $taskSource){Copy-Item -LiteralPath $taskSource -Destination $taskEvidenceRoot -Recurse}
 }
@@ -31,7 +31,7 @@ Copy-Item -LiteralPath (Join-Path $taskRunRoot 'writeup.md') -Destination (Join-
 Copy-Item -LiteralPath (Join-Path $taskRunRoot 'summary.json') -Destination (Join-Path $taskOutputRoot 'summary.json')
 $taskPatch=& git -C (Join-Path $taskRunRoot 'integrated') diff --binary $((Get-Content -Raw -LiteralPath (Join-Path $taskRunRoot 'state.json') | ConvertFrom-Json).baseline) $taskSummary.finalCommit -- src
 if($LASTEXITCODE -ne 0){throw 'Could not export final source changes'}
-[IO.File]::WriteAllLines((Join-Path $taskOutputRoot 'ledger-source-changes.patch'),[string[]]$taskPatch,[Text.UTF8Encoding]::new($false))
+[IO.File]::WriteAllText((Join-Path $taskOutputRoot 'ledger-source-changes.patch'),([string]::Join("`n", [string[]]$taskPatch) + "`n"),[Text.UTF8Encoding]::new($false))
 $taskPrivateZip=Join-Path $taskOutputRoot 'collision-course-private-submission.zip'
 Compress-Archive -Path (Join-Path $taskStage '*') -DestinationPath $taskPrivateZip -Force
 # Preserve the staging folder for inspection; no recursive cleanup is performed.
