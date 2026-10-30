@@ -23,6 +23,29 @@ export function parseAnswer(text) {
   for (const candidate of candidates) {
     try { const parsed = JSON.parse(candidate); if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) return parsed; } catch {}
   }
+  for (const key of ['files', 'tasks']) {
+    const match = new RegExp('"' + key + '"\\s*:\\s*\\[').exec(text);
+    if (!match) continue;
+    const start = match.index + match[0].lastIndexOf('[');
+    let depth = 0, quoted = false, escaped = false;
+    for (let i = start; i < text.length; i++) {
+      const c = text[i];
+      if (quoted) {
+        if (escaped) escaped = false;
+        else if (c === '\\') escaped = true;
+        else if (c === '"') quoted = false;
+        continue;
+      }
+      if (c === '"') { quoted = true; continue; }
+      if (c === '[' || c === '{') depth++;
+      if (c === ']' || c === '}') depth--;
+      if (depth === 0) {
+        try {
+          return { [key]: JSON.parse(text.slice(start, i + 1)), summary: 'Recovered complete payload; malformed metadata omitted', concerns: ['Response metadata was malformed'] };
+        } catch { break; }
+      }
+    }
+  }
   throw Error('Model response did not contain a complete JSON object');
 }
 export function filesUnder(root, dir) {
@@ -116,6 +139,9 @@ export async function grade(root, evidence) {
   const report = readJson(p); atomic(evidence + '.json', report); return report;
 }
 export function passes(report, id) { return report.regression?.passed === true && report.testsUnmodified === true && report.tasks?.[id]?.passed === true; }
+export function candidateReady(report, id) {
+  return report.regression?.passed === true && report.testsUnmodified === true && (report.tasks?.[id]?.passed === true || report.tasks?.[id]?.missing === true);
+}
 export async function catalog(fetcher = fetch) {
   const res = await fetcher('https://openrouter.ai/api/v1/models', { signal: AbortSignal.timeout(30000) });
   if (!res.ok) throw Error('Could not read model catalog: HTTP ' + res.status);
