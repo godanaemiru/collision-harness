@@ -8,6 +8,8 @@ const home = path.dirname(fileURLToPath(import.meta.url));
 const args = process.argv.slice(2);
 const opt = (name, fallback) => args.includes(name) ? args[args.indexOf(name) + 1] : fallback;
 const command = args[0] || 'help';
+const requestTimeout = Number(opt('--request-timeout-ms', '180000'));
+if (!Number.isInteger(requestTimeout) || requestTimeout < 10000 || requestTimeout > 300000) throw Error('Request timeout must be 10000..300000 milliseconds');
 if (fs.existsSync(path.join(home, '.env'))) process.loadEnvFile(path.join(home, '.env'));
 const configPath = path.resolve(opt('--config', path.join(home, 'config.json')));
 const cfg = readJson(configPath);
@@ -160,7 +162,7 @@ async function run(dir, backlog, availableModels) {
     atomic(path.join(evidence, 'request-' + reservation.id + '.json'), { model, messages, meta, reasoning, maxTokens:cfg.maxTokens, zeroPriceCeiling:true });
     try {
       const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-        method: 'POST', signal: AbortSignal.timeout(180000),
+        method: 'POST', signal: AbortSignal.timeout(requestTimeout),
         headers: { Authorization: 'Bearer ' + process.env.OPENROUTER_API_KEY, 'Content-Type': 'application/json', 'X-OpenRouter-Title': 'Collision Harness' },
         body: JSON.stringify({ model, messages, max_tokens: cfg.maxTokens, stream: false, reasoning, provider: { allow_fallbacks: false, max_price: { prompt: 0, completion: 0, request: 0 } } })
       });
@@ -186,7 +188,19 @@ async function run(dir, backlog, availableModels) {
       budget.settle(reservation, body);
       return parseAnswer(body.choices?.[0]?.message?.content);
     } catch (e) {
-      if (reservation.status === 'pending') { reservation.status = 'failed_cost_unconfirmed'; reservation.costUsd = null; state.halted = true; save(); }
+      if (reservation.status === 'pending') {
+        reservation.status = 'failed_cost_unconfirmed'; reservation.costUsd = null; state.halted = true;
+        if (reservation.upperBoundUsd === 0 && state.spentUsd === 0) {
+          try {
+            const reconciliation = await fetch('https://openrouter.ai/api/v1/key', {headers:{Authorization:'Bearer '+process.env.OPENROUTER_API_KEY},signal:AbortSignal.timeout(30000)});
+            if (reconciliation.ok && (await reconciliation.json()).data?.usage === 0) {
+              reservation.status = 'interrupted_reconciled_zero'; reservation.costUsd = 0; reservation.reconciledAt = new Date().toISOString(); state.halted = false;
+              event('interrupted_free_request_reconciled', {request:reservation.id,providerKeyUsageUsd:0,upperBoundUsd:0});
+            }
+          } catch {}
+        }
+        save();
+      }
       event('model_error', { request: reservation.id, error: e.message }); throw e;
     }
   }

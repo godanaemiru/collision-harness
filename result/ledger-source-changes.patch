@@ -1,0 +1,129 @@
+diff --git a/src/accounts.js b/src/accounts.js
+index 2451bc4..27f82e1 100644
+--- a/src/accounts.js
++++ b/src/accounts.js
+@@ -13,12 +13,13 @@ export function accountView(store, account) {
+     name: account.name,
+     currency: account.currency,
+     balance: store.ledger.balance(account.id),
++    frozen: account.frozen,
+   };
+ }
+ 
+ export function createAccount(store, { id, name, openingBalance }) {
+   if (store.accounts.has(id)) throw accountExists(id);
+-  const account = { id, name, currency: DEFAULT_CURRENCY };
++  const account = { id, name, currency: DEFAULT_CURRENCY, frozen: false };
+   store.accounts.set(id, account);
+   if (openingBalance > 0) {
+     store.ledger.post({
+diff --git a/src/api/routes.js b/src/api/routes.js
+index 95184c4..7988ce0 100644
+--- a/src/api/routes.js
++++ b/src/api/routes.js
+@@ -9,7 +9,9 @@ const reply = (status, body) => ({ status, body });
+ function quoteFee(type, amount) {
+   const band = SCHEDULE[type].find((candidate) => amount <= candidate.upTo);
+   if (band.flat !== undefined) return band.flat;
+-  return Math.floor((amount * band.percent) / 100);
++  const percentFee = (amount * band.percent) / 100;
++  const roundedFee = Math.floor(percentFee + 0.5);
++  return band.minFee !== undefined ? Math.max(band.minFee, roundedFee) : roundedFee;
+ }
+ 
+ function postTransfer({ store, body, headers }) {
+@@ -59,4 +61,22 @@ export const routes = [
+     path: '/transfers',
+     handler: postTransfer,
+   },
++  {
++    method: 'POST',
++    path: '/accounts/:id/freeze',
++    handler: ({ store, params }) => {
++      const account = requireAccount(store, params.id);
++      account.frozen = true;
++      return reply(200, accountView(store, account));
++    },
++  },
++  {
++    method: 'POST',
++    path: '/accounts/:id/unfreeze',
++    handler: ({ store, params }) => {
++      const account = requireAccount(store, params.id);
++      account.frozen = false;
++      return reply(200, accountView(store, account));
++    },
++  },
+ ];
+diff --git a/src/errors.js b/src/errors.js
+index 48447ae..6910d83 100644
+--- a/src/errors.js
++++ b/src/errors.js
+@@ -17,3 +17,5 @@ export const accountNotFound = (id) => new AppError(404, 'ACCOUNT_NOT_FOUND', `a
+ export const accountExists = (id) => new AppError(409, 'ACCOUNT_EXISTS', `account ${id} already exists`);
+ export const insufficientFunds = () =>
+   new AppError(422, 'INSUFFICIENT_FUNDS', 'balance is too low for the amount plus charges');
++export const accountFrozen = () =>
++  new AppError(422, 'ACCOUNT_FROZEN', 'account is frozen');
+diff --git a/src/fees/calculate.js b/src/fees/calculate.js
+index 15688c4..344a3de 100644
+--- a/src/fees/calculate.js
++++ b/src/fees/calculate.js
+@@ -6,5 +6,7 @@ export function calculateFee(type, amount) {
+   const band = bands.find((candidate) => amount <= candidate.upTo);
+   if (!band) throw new Error(`amount ${amount} is above the top fee band for ${type}`);
+   if (band.flat !== undefined) return band.flat;
+-  return Math.floor((amount * band.percent) / 100);
++  const percentFee = (amount * band.percent) / 100;
++  const roundedFee = Math.floor(percentFee + 0.5);
++  return band.minFee !== undefined ? Math.max(band.minFee, roundedFee) : roundedFee;
+ }
+diff --git a/src/fees/schedule.js b/src/fees/schedule.js
+index 3dce9e6..70acd3c 100644
+--- a/src/fees/schedule.js
++++ b/src/fees/schedule.js
+@@ -1,6 +1,6 @@
+ export const SCHEDULE = {
+   send: [
+-    { upTo: 5_000, flat: 150 },
++    { upTo: 5_000, percent: 5, minFee: 100 },
+     { upTo: 50_000, flat: 500 },
+     { upTo: 500_000, percent: 1 },
+     { upTo: 5_000_000, percent: 0.8 },
+diff --git a/src/ledger/transfer.js b/src/ledger/transfer.js
+index 75d59c3..64eebae 100644
+--- a/src/ledger/transfer.js
++++ b/src/ledger/transfer.js
+@@ -1,12 +1,17 @@
+ import { requireAccount } from '../accounts.js';
+ import { SYSTEM_ACCOUNTS } from '../config.js';
+-import { insufficientFunds, selfTransfer } from '../errors.js';
++import { accountFrozen, insufficientFunds, selfTransfer } from '../errors.js';
+ import { calculateFee } from '../fees/calculate.js';
+ 
+ export function sendMoney(store, { from, to, amount }) {
+   if (from === to) throw selfTransfer();
+-  requireAccount(store, from);
++  const fromAccount = requireAccount(store, from);
+   requireAccount(store, to);
++  if (fromAccount.frozen) throw accountFrozen();
++  
++  const toAccount = store.accounts.get(to);
++  if (toAccount.frozen) throw accountFrozen();
++  
+   const { ledger } = store;
+   const fee = calculateFee('send', amount);
+   if (ledger.balance(from) < amount + fee) throw insufficientFunds();
+diff --git a/src/store.js b/src/store.js
+index 809bd8c..7b91385 100644
+--- a/src/store.js
++++ b/src/store.js
+@@ -4,7 +4,7 @@ import { createLedger } from './ledger/ledger.js';
+ export function createStore({ clock = () => new Date() } = {}) {
+   const accounts = new Map();
+   for (const id of Object.values(SYSTEM_ACCOUNTS)) {
+-    accounts.set(id, { id, name: id, currency: DEFAULT_CURRENCY, system: true });
++    accounts.set(id, { id, name: id, currency: DEFAULT_CURRENCY, frozen: false });
+   }
+   return { accounts, ledger: createLedger(clock), clock };
+ }

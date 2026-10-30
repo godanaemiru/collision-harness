@@ -9,7 +9,7 @@ New-Item -ItemType Directory -Path $OutputFolder -Force | Out-Null
 $taskOutputRoot=(Resolve-Path -LiteralPath $OutputFolder).Path
 $taskSummary=Get-Content -Raw -LiteralPath (Join-Path $taskRunRoot 'summary.json') | ConvertFrom-Json
 if(Test-Path -LiteralPath (Join-Path $taskRunRoot 'process.lock')){throw 'Wait until the run has stopped before packaging.'}
-$taskStage=Join-Path $taskOutputRoot ('private-stage-'+[guid]::NewGuid().ToString('N'))
+$taskStage=Join-Path $taskRunRoot ('private-stage-'+[guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $taskStage | Out-Null
 $taskResultRoot=Join-Path $taskStage 'ledger-result'
 New-Item -ItemType Directory -Path $taskResultRoot | Out-Null
